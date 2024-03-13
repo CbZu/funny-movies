@@ -1,12 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
+import Header from './components/header/header';
+import Video from './components/video/video';
 
-import NxWelcome from './nx-welcome';
 
 export function App() {
   return (
     <div>
-      <NxWelcome title="funny-movies" />
+      <Header></Header>
+      <Video></Video>
     </div>
   );
 }
