@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
+
+.line-clamp-5 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+}

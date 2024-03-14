@@ -1,15 +1,24 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
-import Header from './components/header/header';
-import Video from './components/video/video';
-
+import Header from './components/header/Header';
+import SharedVideos from './components/shared-videos/SharedVideos';
+import { Route, Routes } from 'react-router-dom';
+import SharingPage from './components/sharing-page/SharingPage';
 
 export function App() {
   return (
-    <div>
-      <Header></Header>
-      <Video></Video>
-    </div>
+      <div className="m5 p-5">
+        <Header></Header>
+        <Routes>
+          <Route
+            path="/"
+            element={<SharedVideos/>}
+          />
+          <Route
+            path="/share"
+            element={<SharingPage/>}
+          />
+        </Routes>
+      </div>
   );
 }
 

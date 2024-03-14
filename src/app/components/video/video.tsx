@@ -1,28 +1,19 @@
-const Video = () => {
+import { VideoModel } from "src/app/model/Video";
+import ReactPlayer from 'react-player';
+
+const Video = ({sharedBy, url, title, description }: VideoModel) => {
   return (
-    <div className="flex flex-row w-full">
+    <div className="flex flex-row w-9/12 max-h-72">
       <div className="basis-2/5">
         <div className="iframe-container">
-          <iframe
-            src={`https://www.youtube.com/embed/OYUY7Ugupts`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="YouTube video player"
-          ></iframe>
+          <ReactPlayer layer url={url} controls={true} width="445px" height="250px" />
         </div>
       </div>
       <div className="basis-3/5">
-        <h4 className="font-bold text-red-500">Movie Title</h4>
-        <p>Shared by: acnn@gmail.com</p>
+        <h4 className="font-bold text-red-500">{title}</h4>
+        <p>Shared by: {sharedBy}</p>
         <p>Description:</p>
-        <p className="font-bold">
-          Như Anh Đã Thấy Em (CTTDE2) - PhucXp ft. Freak D #freakd​ #lofi​
-          #NhuAnhDaThayEm Chơi Tiktok cùng ORINN tại đây nhé mọi người:
-          https://vt.tiktok.com/ZS8N5JAgH/ https://vt.tiktok.com/ZS8N5FaJf/ ►
-          Stream on: https://Orinn.dfan.to/NADNTE ► Official Mv: • PhucXp - Nhu
-          Anh Da Thay Em (CTTDE 2)... ► PhucXp: / ducphucakadp ► More
-          information about Freak D Music: https://lnkto.bio/freakd
-        </p>
+        <p className="font-bold line-clamp-5">{description}</p>
       </div>
     </div>
   );
