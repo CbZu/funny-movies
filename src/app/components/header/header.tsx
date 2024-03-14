@@ -1,41 +1,41 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { API_ENDPOINT } from '../../constants';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [cookies, setCookie] = useCookies(["token"]);
-
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
-      const response = await fetch(`${API_ENDPOINT}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-      const jsonData = await response.json();
-      setCookie("token", jsonData.token, { path: '/' });
-    } catch (error: any) {
-      setIsLoggedIn(false);
-    }
+    const response = await fetch(`http://localhost:3000/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    const jsonData = await response.json();
+    setCookie('token', jsonData.token, { path: '/' });
+    setIsLoggedIn(true);
   };
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleLogout = async () => {
+    removeCookie('token');
+    setIsLoggedIn(false)
+  };
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     handleLogin();
+  };
+
+  const navigateToSharePage = () => {
+    navigate('/share');
   };
 
   return (
@@ -50,21 +50,22 @@ const Header = () => {
       </div>
       <div className="flex space-x-4 items-center p-4 pr-0">
         {isLoggedIn ? (
-          <div>
-            <p>{}</p>
+          <div className="flex space-x-4">
+            <p className="text-center">{email}</p>
             <button
               type="submit"
               className="bg-white border hover:bg-gray-300 border-black text-black font-bold py-2 px-4 rounded shadow-md whitespace-nowrap"
+              onClick={navigateToSharePage}
             >
               Share a movie
             </button>
             <button
               type="submit"
               className="bg-white border hover:bg-gray-300 border-black text-black font-bold py-2 px-4 rounded shadow-md whitespace-nowrap"
+              onClick={handleLogout}
             >
               Logout
             </button>
-
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex space-x-4">

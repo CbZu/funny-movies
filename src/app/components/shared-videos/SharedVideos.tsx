@@ -1,51 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import Video from '../video/Video';
 import { VideoModel } from 'src/app/model/Video';
-import { API_ENDPOINT } from 'src/app/constants';
-
 
 const SharedVideos = () => {
-    const [videos, setVideos] = useState<VideoModel[]>([]);
-    const [loading, setLoading] = useState(true);
+  const [videos, setVideos] = useState<VideoModel[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(`http://localhost:3000/videos-sharing`, {
-            credentials: 'include',
-          });
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          const jsonData = await response.json();
-          setVideos(jsonData);
-          setLoading(false);
-        } catch (error: any) {
-          setLoading(false);
-        }
-      };
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`http://localhost:3000/videos-sharing`);
+      const jsonData = await response.json();
+      setVideos(jsonData);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
-      fetchData();
-    }, []);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-    if (loading) {
-      return <div>Loading...</div>;
-    }
+  return (
+    <div className="flex flex-col space-y-4 items-center">
+      {videos.map((item) => (
+        <Video
+          key={item.id}
+          id={item.id}
+          sharedBy={item.sharedBy}
+          url={item.url}
+          title={item.title}
+          description={item.description}
+        ></Video>
+      ))}
+    </div>
+  );
+};
 
-    return (
-      <div className="flex flex-col space-y-4 items-center">
-        {videos.map((item) => (
-          <Video
-            key={item.id}
-            id={item.id}
-            sharedBy={item.sharedBy}
-            url={item.url}
-            title={item.title}
-            description={item.description}
-          ></Video>
-        ))}
-      </div>
-    );
-  };
-  
-  export default SharedVideos;
+export default SharedVideos;

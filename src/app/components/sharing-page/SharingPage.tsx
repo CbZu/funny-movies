@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { API_ENDPOINT } from "src/app/constants";
+import { useCookies } from "react-cookie";
 
 const SharingPage = () => {
 
   const [url, setUrl] = useState('');
+  const [cookies] = useCookies(['token']);
 
   const shareVideo = async () => {
+    const token = cookies.token;
     const response = await fetch(`http://localhost:3000/videos-sharing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ video: { url } }),
+      body: JSON.stringify({ video: { url } })
     });
 
     if (!response.ok) {
