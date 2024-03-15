@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Video from '../video/Video';
 import { VideoModel } from 'src/app/model/Video';
+import { API_DOMAIN } from "src/app/constants";
 
 const SharedVideos = () => {
   const [videos, setVideos] = useState<VideoModel[]>([]);
@@ -8,7 +9,7 @@ const SharedVideos = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:3000/videos-sharing`);
+      const response = await fetch(`${API_DOMAIN}/videos-sharing`);
       const jsonData = await response.json();
       setVideos(jsonData);
       setLoading(false);

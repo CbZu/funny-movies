@@ -1,24 +1,28 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import { API_DOMAIN } from "src/app/constants";
+import { ToastProps } from "src/app/model/ToastProps";
 
-const SharingPage = () => {
+const SharingPage = ({ setToastError, setToastSuccess }: ToastProps) => {
 
   const [url, setUrl] = useState('');
   const [cookies] = useCookies(['token']);
 
   const shareVideo = async () => {
     const token = cookies.token;
-    const response = await fetch(`http://localhost:3000/videos-sharing`, {
+    const response = await fetch(`${API_DOMAIN}/videos-sharing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `${token}`
       },
-      body: JSON.stringify({ video: { url } })
+      body: JSON.stringify({ url })
     });
 
-    if (!response.ok) {
-      throw new Error('Login failed');
+    if (response.ok) {
+      setToastSuccess("Sharing the success");
+    } else {
+      setToastError("Can not share video");
     }
   };
 

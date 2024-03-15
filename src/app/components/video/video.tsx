@@ -3,10 +3,10 @@ import ReactPlayer from 'react-player';
 
 const Video = ({sharedBy, url, title, description }: VideoModel) => {
   return (
-    <div className="flex flex-row w-9/12 max-h-72">
+    <div className="flex flex-row space-x-4 w-9/12 max-h-72 max-w-52 mt-8">
       <div className="basis-2/5">
         <div className="iframe-container">
-          <ReactPlayer layer url={url} controls={true} width="445px" height="250px" />
+          <ReactPlayer layer="true" url={url} controls={true} width="445px" height="250px" />
         </div>
       </div>
       <div className="basis-3/5">
