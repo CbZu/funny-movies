@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
 import { API_DOMAIN } from "src/app/constants";
-import { ToastProps } from "src/app/model/ToastProps";
 
-const SharingPage = ({ setToastError, setToastSuccess }: ToastProps) => {
-
+const SharingPage = () => {
   const [url, setUrl] = useState('');
   const [cookies] = useCookies(['token']);
 
@@ -20,9 +19,9 @@ const SharingPage = ({ setToastError, setToastSuccess }: ToastProps) => {
     });
 
     if (response.ok) {
-      setToastSuccess("Sharing the success");
+      toast.success("Shared successfully");
     } else {
-      setToastError("Can not share video");
+      toast.error("Can not share video");
     }
   };
 

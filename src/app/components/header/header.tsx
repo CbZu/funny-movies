@@ -3,12 +3,11 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-import { ToastProps } from "src/app/model/ToastProps";
 import { API_DOMAIN } from "src/app/constants";
 import consumer from "src/app/helper/consumer";
+import { toast } from "react-toastify";
 
-const Header = ({ setToastError, setToastSuccess }: ToastProps) => {
-
+const Header = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,7 +24,7 @@ const Header = ({ setToastError, setToastSuccess }: ToastProps) => {
       const subscription = consumer.subscriptions.create('VideosSharingChannel', {
         received(data) {
           if (data.email !== email) {
-            setToastSuccess(`New video is shared by ${data.email} - Title: ${data.video}`);
+            toast.success(`New video is shared by ${data.email} - Title: ${data.video}`);
           }
         },
       });
@@ -36,7 +35,7 @@ const Header = ({ setToastError, setToastSuccess }: ToastProps) => {
     }
   }, [isLoggedIn]);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     handleLogin();
   };
@@ -47,7 +46,7 @@ const Header = ({ setToastError, setToastSuccess }: ToastProps) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password: password }),
+      body: JSON.stringify({ email, password }),
     });
     const jsonData = await response.json();
     if (response.ok) {
@@ -55,7 +54,7 @@ const Header = ({ setToastError, setToastSuccess }: ToastProps) => {
       setCookie('email', jsonData.email, { path: '/' });
       setIsLoggedIn(true)
     } else {
-      setToastError(jsonData.error);
+      toast.error(jsonData.error);
     }
   };
 
@@ -78,14 +77,12 @@ const Header = ({ setToastError, setToastSuccess }: ToastProps) => {
           <div className="flex space-x-4 item-center">
             <p className="flex items-center">{email}</p>
             <button
-              type="submit"
               className="bg-white border hover:bg-gray-300 border-black text-black font-bold py-2 px-4 rounded shadow-md whitespace-nowrap"
               onClick={()=> navigate('/share')}
             >
               Share a movie
             </button>
             <button
-              type="submit"
               className="bg-white border hover:bg-gray-300 border-black text-black font-bold py-2 px-4 rounded shadow-md whitespace-nowrap"
               onClick={handleLogout}
             >

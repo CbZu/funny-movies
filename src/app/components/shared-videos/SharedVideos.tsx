@@ -31,7 +31,7 @@ const SharedVideos = () => {
           url={item.url}
           title={item.title}
           description={item.description}
-        ></Video>
+        />
       ))}
     </div>
   );
