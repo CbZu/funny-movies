@@ -1,10 +1,29 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import Video from "./video";
+import '@testing-library/jest-dom';
 
-import Header from './header';
+describe('Video Component', () => {
+  const videoData = {
+    id: 4,
+    sharedBy: 'John Doe',
+    url: 'https://www.example.com/video.mp4',
+    title: 'Example Video',
+    description: 'This is an example video description.',
+  };
 
-describe('Header', () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(<Header />);
-    expect(baseElement).toBeTruthy();
+  test('renders video with correct data', () => {
+    render(<Video {...videoData} />);
+
+    const titleElement = screen.getByText(videoData.title);
+    expect(titleElement).toBeInTheDocument();
+
+    const sharedByElement = screen.getByText(`Shared by: ${videoData.sharedBy}`);
+    expect(sharedByElement).toBeInTheDocument();
+
+    const descriptionElement = screen.getByText(videoData.description);
+    expect(descriptionElement).toBeInTheDocument();
+
+    const youtubeElement = screen.getByTestId('video');
+    expect(youtubeElement).toBeInTheDocument();
   });
 });

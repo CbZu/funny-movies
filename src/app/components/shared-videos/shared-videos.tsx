@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import Video from '../video/Video';
+import { useState, useEffect } from 'react';
 import { VideoModel } from 'src/app/model/Video';
 import { API_DOMAIN } from "src/app/constants";
+import Video from "../video/video";
 
 const SharedVideos = () => {
   const [videos, setVideos] = useState<VideoModel[]>([]);
@@ -17,12 +17,9 @@ const SharedVideos = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="flex flex-col space-y-4 items-center">
+    <div data-testid="shared-videos" className="flex flex-col space-y-4 items-center">
+      {loading && <div>Loading...</div>}
       {videos.map((item) => (
         <Video
           key={item.id}
